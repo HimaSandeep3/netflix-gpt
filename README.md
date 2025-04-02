@@ -2,8 +2,18 @@
 - Create React App
 - Configured TailwindCSS
 - Header
+- Rotuing
 - Login Form
 - SignUp Form
+- Form Validation
+- useRef Hook
+- Firebase Authentication
+- Deploying app to Production
+- Create SignUp/SignIn user account in fireBase
+- Update userProfile in Firebase
+- Implemented Email verification for newly registered user
+- Implemented forgot password feature
+- Implemented reset password feature through Email
 
 # Features
 - Login / Sign Up

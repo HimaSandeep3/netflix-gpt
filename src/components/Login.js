@@ -1,11 +1,105 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import Header from "./Header";
-import { useState } from "react";
+import { validateForm, validateEmailAndPassword, validateEmail } from "../utils/Validate";
+import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../utils/Firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+
 const Login = () => {
   const [showSignUp, setShowSignUp] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const fName = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
   const toggleSignUp = () => {
     setShowSignUp(!showSignUp);
   };
+
+  const submitForm = () => {
+    if (showSignUp) {
+      const res = validateForm(email.current.value, password.current.value, fName.current.value);
+      setErrorMsg(res);
+      if (res) {
+        return;
+      }
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: fName.current.value,
+            photoURL: "https://github.com/HimaSandeep3.png",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(addUser({ uid: uid, email: email, displayName: displayName, photoURL: photoURL }));
+              sendEmailVerification(auth.currentUser)
+                .then(() => {
+                  setErrorMsg("Email verification sent!");
+                  console.log("Email verification sent!");
+                })
+                .catch((error) => {
+                  setErrorMsg("Error sending email verification:", error);
+                  console.log("Error sending email verification:", error);
+                });
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMsg(error.message);
+            });
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          if (errorMessage) setErrorMsg("Email already exists");
+          navigate("/");
+        });
+    } else {
+      const res = validateEmailAndPassword(email.current.value, password.current.value);
+      setErrorMsg(res);
+      if (res) {
+        return;
+      }
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          if (errorMessage.includes("password")) {
+            setErrorMsg("Invalid Email or Password");
+            setForgotPassword(true);
+          } else {
+            setErrorMsg("Invalid Email or Password");
+          }
+          navigate("/");
+        });
+    }
+  };
+
+  const handleForgotPassword = () => {
+    const res = validateEmail(forgotEmail);
+    setErrorMsg(res);
+    if (res) {
+      return;
+    }
+    sendPasswordResetEmail(auth, forgotEmail)
+      .then(() => {
+        console.log("Password reset email sent!");
+        setForgotPassword(false);
+      })
+      .catch((error) => {
+        setErrorMsg(error.message);
+      });
+  };
+
   return (
     <div className="h-screen bg-black">
       <Header />
@@ -21,43 +115,94 @@ const Login = () => {
           <h1 className="text-white text-3xl font-bold mb-6">
             {showSignUp ? "Sign Up" : "Sign In"}
           </h1>
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             {showSignUp && (
               <div className="mb-4">
                 <input
+                  ref={fName}
                   type="text"
                   placeholder="Full Name"
                   className="block w-full p-2 text-lg text-white bg-gray-800 rounded-md"
                 />
               </div>
             )}
-            <div className="mb-4">
-              <input
-                type="email"
-                placeholder="Email or mobile number"
-                className="block w-full p-2 text-lg text-white bg-gray-800 rounded-md"
-              />
-            </div>
-            <div className="mb-8">
-              <input
-                type="password"
-                placeholder="Password"
-                className="block w-full p-2 text-lg text-white bg-gray-800 rounded-md"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md shadow-md w-full"
-            >
-              {showSignUp ? "Sign Up" : "Sign In"}
-            </button>
+            {forgotPassword ? (
+              <div className="mb-8 ">
+                <p className="text-white text-lg mb-4">
+                  Enter your email to reset your password
+                </p>
+                <input
+                  type="email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="Email"
+                  className="block w-full p-2 text-lg text-white bg-gray-800 rounded-md"
+                />
+                <button
+                  type="button"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md shadow-md w-full mt-5"
+                  onClick={handleForgotPassword}
+                >
+                  Send Password Reset Email
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="mb-4">
+                  <input
+                    ref={email}
+                    type="email"
+                    placeholder="Email"
+                    className="block w-full p-2 text-lg text-white bg-gray-800 rounded-md"
+                  />
+                </div>
+                <div className="mb-8">
+                  <input
+                    ref={password}
+                    type="password"
+                    placeholder="Password"
+                    className="block w-full p-2 text-lg text-white bg-gray-800 rounded-md"
+                  />
+                </div>
+              </>
+            )}
+            <p className="text-red-500 text-lg mb-4 font-bold">{errorMsg}</p>
+            {forgotPassword ? (
+              <button
+                type="button"
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md shadow-md w-full"
+                onClick={() => setForgotPassword(false)}
+              >
+                Back to Sign In
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md shadow-md w-full"
+                onClick={submitForm}
+              >
+                {showSignUp ? "Sign Up" : "Sign In"}
+              </button>
+            )}
+          </form>
+          {!showSignUp && !forgotPassword && (
             <p className="text-gray-400 text-sm mt-4" onClick={toggleSignUp}>
               {showSignUp ? "Already a member? " : "New to Netflix? "}
               <span className="text-blue-500 cursor-pointer">
                 {showSignUp ? "Sign in now." : "Sign up now."}
               </span>
             </p>
-          </form>
+          )}
+          {!showSignUp && !forgotPassword && (
+            <p className="text-gray-400 text-sm mt-4">
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={() => setForgotPassword(true)}
+              >
+                Forgot Password?
+              </span>
+            </p>
+          )}
         </div>
       </div>
     </div>
