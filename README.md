@@ -14,6 +14,16 @@
 - Implemented Email verification for newly registered user
 - Implemented forgot password feature
 - Implemented reset password feature through Email
+- Prevented manual navigation to browse and login route 
+- Constant values in constants file
+- Register in TMDB and create app and generate API Key
+- Get Movies API call
+- Custom Hook for playing movies and movie trailer
+- Implemented movie trailer api call
+- created Video container to play movie trailer automatically from youtube
+- Created movie slice
+- Updated store with movies list.
+- Updated store with movie trailer(instead of useState hook)
 
 # Features
 - Login / Sign Up

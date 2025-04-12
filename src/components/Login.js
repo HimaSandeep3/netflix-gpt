@@ -3,16 +3,15 @@ import Header from "./Header";
 import { validateForm, validateEmailAndPassword, validateEmail } from "../utils/Validate";
 import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/Firebase";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { DASHBOARD_IMG, USER_IMG } from "../utils/constants";
 
 const Login = () => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [forgotPassword, setForgotPassword] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const fName = useRef(null);
   const email = useRef(null);
@@ -34,21 +33,19 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: fName.current.value,
-            photoURL: "https://github.com/HimaSandeep3.png",
+            photoURL: USER_IMG,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
               dispatch(addUser({ uid: uid, email: email, displayName: displayName, photoURL: photoURL }));
               sendEmailVerification(auth.currentUser)
                 .then(() => {
-                  setErrorMsg("Email verification sent!");
                   console.log("Email verification sent!");
                 })
                 .catch((error) => {
                   setErrorMsg("Error sending email verification:", error);
                   console.log("Error sending email verification:", error);
                 });
-              navigate("/browse");
             })
             .catch((error) => {
               setErrorMsg(error.message);
@@ -57,7 +54,6 @@ const Login = () => {
         .catch((error) => {
           const errorMessage = error.message;
           if (errorMessage) setErrorMsg("Email already exists");
-          navigate("/");
         });
     } else {
       const res = validateEmailAndPassword(email.current.value, password.current.value);
@@ -69,7 +65,6 @@ const Login = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log(user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -79,7 +74,6 @@ const Login = () => {
           } else {
             setErrorMsg("Invalid Email or Password");
           }
-          navigate("/");
         });
     }
   };
@@ -105,7 +99,7 @@ const Login = () => {
       <Header />
       <div className="absolute top-0 left-0 w-full h-full">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/fbf440b2-24a0-49f5-b2ba-a5cbe8ea8736/web/IN-en-20250324-TRIFECTA-perspective_d7c906ec-0531-47de-8ece-470d5061c88a_large.jpg"
+          src={DASHBOARD_IMG}
           alt="dashBoard_img"
           className="object-cover w-full h-full"
         />
@@ -129,7 +123,7 @@ const Login = () => {
             {forgotPassword ? (
               <div className="mb-8 ">
                 <p className="text-white text-lg mb-4">
-                  Enter your email to reset your password
+                  Enter your Email to reset your password
                 </p>
                 <input
                   type="email"
@@ -185,11 +179,16 @@ const Login = () => {
               </button>
             )}
           </form>
+          {showSignUp && (
+            <p onClick={toggleSignUp} className="text-gray-400 text-sm mt-4">
+              Already a member? <span className="text-blue-500 cursor-pointer">Sign In now.</span>
+            </p>
+          )}
           {!showSignUp && !forgotPassword && (
             <p className="text-gray-400 text-sm mt-4" onClick={toggleSignUp}>
               {showSignUp ? "Already a member? " : "New to Netflix? "}
               <span className="text-blue-500 cursor-pointer">
-                {showSignUp ? "Sign in now." : "Sign up now."}
+                {showSignUp ? "Sign in now." : "Sign Up now."}
               </span>
             </p>
           )}
