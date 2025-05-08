@@ -24,6 +24,9 @@
 - Created movie slice
 - Updated store with movies list.
 - Updated store with movie trailer(instead of useState hook)
+- Completed secondary container with-TopRated,Upcoming movies list etc and made horizontal flow with left and right icons
+- made browse page better with tailwindCSS
+- created 4 custom hooks
 
 # Features
 - Login / Sign Up
