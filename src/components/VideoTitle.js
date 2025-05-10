@@ -1,5 +1,4 @@
 import React from 'react'
-import { IMG_PATH } from '../utils/constants';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
