@@ -27,6 +27,12 @@
 - Completed secondary container with-TopRated,Upcoming movies list etc and made horizontal flow with left and right icons
 - made browse page better with tailwindCSS
 - created 4 custom hooks
+- installed fontAwesome icons
+- implemented gpt Search page with Search bar
+- created gpt and language selection slice
+- implemented multi langaugae feature(eng,hin,tel)
+- removed console logs
+- updated header component with language selection in whole page
 
 # Features
 - Login / Sign Up
