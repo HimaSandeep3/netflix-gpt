@@ -33,6 +33,8 @@
 - implemented multi langaugae feature(eng,hin,tel)
 - removed console logs
 - updated header component with language selection in whole page
+- implemented gemini ai for movie recommendations using helper function
+- reduced api calls
 
 # Features
 - Login / Sign Up
