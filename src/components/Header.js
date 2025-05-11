@@ -7,7 +7,7 @@ import { addUser, removeUser } from "../utils/userSlice";
 import { LOGO } from "../utils/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilm, faHome } from "@fortawesome/free-solid-svg-icons";
-import { toggleGPTSearchView } from "../utils/gptSlice";
+import { addGPTMovieResults, toggleGPTSearchView } from "../utils/gptSlice";
 import { SUPPORTED_LANGUAGES } from "../utils/constants";
 import { changeLanguage } from "../utils/configSlice";
 import lang from "../constants/languageConstants";
@@ -50,6 +50,7 @@ const Header = () => {
   }, []);
   const handleGPTSearch = () => {
     dispatch(toggleGPTSearchView());
+    dispatch(addGPTMovieResults({ movieNames: null, movieResults: null }));
   };
   const handleLanguageChange = (e) => {
     dispatch(changeLanguage(e.target.value));
