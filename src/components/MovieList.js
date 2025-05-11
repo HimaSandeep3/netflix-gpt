@@ -21,15 +21,16 @@ const MovieList = ({ title, movies }) => {
 
   return (
     <div className="px-6 relative group">
-      <h1 className="text-lg md:text-3xl py-4 text-white font-semibold">{title}</h1>
+      <h1 className="text-lg md:text-3xl py-4 text-white font-semibold"><span className='bg-slate-800 p-2 rounded-md'>{title}</span></h1>
 
       {/* Left Arrow */}
-      <button
+
+      {movies?.length > 5 && <button
         onClick={scrollLeft}
         className="hidden group-hover:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-20 bg-black bg-opacity-60 p-2 rounded-full text-white"
       >
         <ChevronLeft size={30} />
-      </button>
+      </button>}
 
       {/* Scroll Container */}
       <div
@@ -42,12 +43,13 @@ const MovieList = ({ title, movies }) => {
       </div>
 
       {/* Right Arrow */}
-      <button
+
+      {movies?.length > 5 && <button
         onClick={scrollRight}
         className="hidden group-hover:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-20 bg-black bg-opacity-60 p-2 rounded-full text-white"
       >
         <ChevronRight size={30} />
-      </button>
+      </button>}
     </div>
   );
 };

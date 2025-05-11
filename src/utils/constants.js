@@ -11,3 +11,4 @@ export const API_OPTIONS={
 
 export const IMG_PATH="https://image.tmdb.org/t/p/original/"
 export const SUPPORTED_LANGUAGES=[{id:"eng",name:"English"},{id:"hin",name:"Hindi"},{id:"tel",name:"Telugu"}]
+export const GEMINIAI_KEY = "AIzaSyCSV0NdP8EkHjnB5D8E5YiZAanbixRPnag"
