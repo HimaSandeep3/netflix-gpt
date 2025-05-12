@@ -91,7 +91,8 @@ const GPTSearchBar = () => {
             style={{ outline: "none" }}
           />
 
-          {query.length >= 3 ? (
+          {/* X mark button, appears only if query length >= 3 */}
+          {query.length >= 3 && (
             <button
               type="button"
               onClick={clearSearch}
@@ -99,19 +100,20 @@ const GPTSearchBar = () => {
             >
               <FontAwesomeIcon icon={faXmark} />
             </button>
-          ) : (
-            <button
-              type="submit"
-              disabled={query.length <= 3}
-              className={`ml-4 ${
-                query.length > 3
-                  ? "bg-red-600 hover:bg-red-700"
-                  : "bg-gray-500 cursor-not-allowed"
-              } text-white font-bold py-2 px-4 rounded`}
-            >
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
           )}
+
+          {/* Search button, disabled until query length >= 3 */}
+          <button
+            type="submit"
+            disabled={query.length < 3}
+            className={`ml-4 ${
+              query.length >= 3
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-gray-500 cursor-not-allowed"
+            } text-white font-bold py-2 px-4 rounded`}
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </button>
         </div>
       </form>
     </div>
