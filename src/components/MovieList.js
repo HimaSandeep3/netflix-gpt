@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import MovieCard from './MovieCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react'; // or use Heroicons/any
 
-const MovieList = ({ title, movies }) => {
+const MovieList = ({ title, movies ,onMovieClick}) => {
   const scrollRef = useRef();
 
   const scrollLeft = () => {
@@ -38,7 +38,12 @@ const MovieList = ({ title, movies }) => {
         className="flex overflow-x-auto scroll-smooth space-x-4 scrollbar-hide no-scrollbar"
       >
         {movies?.map((movie) => (
-          <MovieCard key={movie.id} posterPath={movie.poster_path} />
+          <MovieCard
+          key={movie.id}
+          movie={movie}
+          onClick={() => onMovieClick(movie)}
+          posterPath={movie.poster_path}
+        />
         ))}
       </div>
 
