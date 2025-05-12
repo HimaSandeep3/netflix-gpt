@@ -63,7 +63,7 @@ const GPTSearchBar = () => {
     return json.results;
   };
   return (
-    <div className="pt-[35%] md:pt-[10%] flex justify-center">
+    <div className="absolute top-0 left-0 w-3/5 mx-auto sticky bg-gradient-to-b from-black z-10 flex justify-between md:flex-row lg:flex-row xl:flex-row mt-4 xl:mt-8">
       <form
         className="w-full md:w-1/2 bg-gray-800 rounded-lg shadow-md"
         onSubmit={(e) => e.preventDefault()}

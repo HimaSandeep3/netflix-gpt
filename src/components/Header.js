@@ -56,13 +56,13 @@ const Header = () => {
     dispatch(changeLanguage(e.target.value));
   };
   return (
-    <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-screen flex justify-between">
-      <img className="w-32 h-20" src={LOGO} alt="Netflix_Logo" />
+    <div className="absolute top-0 left-0 w-screen sticky bg-gradient-to-b from-black z-10 flex justify-between md:flex-row lg:flex-row xl:flex-row">
+      <img className="w-32 h-20 md:w-40 lg:w-48 xl:w-56" src={LOGO} alt="Netflix_Logo" />
       {user && (
-        <div className="flex p-2 gap-[6px] flex-col items-center">
-          <div className="flex justify-between gap-4">
+        <div className="flex p-2 gap-[6px] flex-col items-center md:flex-row lg:flex-row xl:flex-row">
+          <div className="flex justify-between gap-4 md:gap-6 lg:gap-8 xl:gap-10">
             <button
-              className="bg-orange-500 text-white hover:bg-orange-600 rounded-md h-12 w-40 font-semibold"
+              className="bg-orange-500 text-white hover:bg-orange-600 rounded-md h-10 w-32 md:w-36 lg:w-40 xl:w-44 font-semibold text-sm"
               onClick={handleGPTSearch}
             >
               <FontAwesomeIcon
@@ -73,19 +73,21 @@ const Header = () => {
             </button>
             {showGPTSearch && (
               <select
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5"
-                onChange={handleLanguageChange}
-              >
-                {SUPPORTED_LANGUAGES.map((language) => (
-                  <option key={language?.id} value={language?.id}>
-                    {language?.name}
-                  </option>
-                ))}
-              </select>
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 md:w-1/2 lg:w-1/2 xl:w-2/3 p-2"
+              onChange={handleLanguageChange}
+            >
+              {SUPPORTED_LANGUAGES.map((language) => (
+                <option key={language?.id} value={language?.id}>
+                  {language?.name}
+                </option>
+              ))}
+            </select>
             )}
-            <img className="w-12 h-12" src={user?.photoURL} alt="user_icon" />
+          </div>
+          <div className="flex justify-end gap-4 md:gap-6 lg:gap-8 xl:gap-10">
+            <img className="w-10 h-10 md:w-12 lg:w-14 xl:w-16" src={user?.photoURL} alt="user_icon" />
             <button
-              className="bg-red-500 text-white hover:bg-red-600 rounded-md h-12 w-24 font-semibold"
+              className="bg-red-500 text-white hover:bg-red-600 rounded-md h-10 w-20 md:w-24 lg:w-28 xl:w-32 font-semibold"
               onClick={handleSignOut}
             >
               {lang[langKey]?.signOut}
