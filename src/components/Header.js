@@ -87,9 +87,8 @@ const Header = () => {
           <div className="flex justify-end gap-4 md:gap-6 lg:gap-8 xl:gap-10">
             <img className="w-10 h-10 md:w-12 lg:w-14 xl:w-16" src={user?.photoURL} alt="user_icon" />
             <button
-              className="bg-red-500 text-white hover:bg-red-600 rounded-md h-10 w-20 md:w-24 lg:w-28 xl:w-32 font-semibold"
-              onClick={handleSignOut}
-            >
+            className="bg-red-500 text-white hover:bg-red-600 rounded-md h-10 sm:w-20 md:w-24 lg:w-28 xl:w-32 flex justify-center font-semibold p-2"
+            onClick={handleSignOut}>
               {lang[langKey]?.signOut}
             </button>
           </div>

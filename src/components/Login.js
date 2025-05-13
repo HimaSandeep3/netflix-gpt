@@ -19,6 +19,7 @@ const Login = () => {
 
   const toggleSignUp = () => {
     setShowSignUp(!showSignUp);
+    setErrorMsg(null);
   };
 
   const submitForm = () => {
