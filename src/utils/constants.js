@@ -5,10 +5,10 @@ export const API_OPTIONS={
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZTA3ZDgzNjE5NzczMGRkNGQ1ZWZmN2YxMmI1MmM3YiIsIm5iZiI6MTc0MzcwNzQzNi41MDIsInN1YiI6IjY3ZWVkZDJjZWRlOGQ4MmYzYmFjZTdhZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7wD42JNs9QemGd4wxY7KOiPuIovOG1oF847vRgNySIY'
+      Authorization: 'Bearer ' + process.env.REACT_APP_TMDBAPI_KEY
     }
   }
 
 export const IMG_PATH="https://image.tmdb.org/t/p/original/"
 export const SUPPORTED_LANGUAGES=[{id:"eng",name:"English"},{id:"hin",name:"Hindi"},{id:"tel",name:"Telugu"}]
-export const GEMINIAI_KEY = "AIzaSyCSV0NdP8EkHjnB5D8E5YiZAanbixRPnag"
+export const GEMINIAI_KEY = process.env.REACT_APP_GEMINIAI_KEY;
